@@ -69,7 +69,7 @@ def test_apply_all_transforms_handles_nans():
     result = apply_all_transforms(df, transform_map, standardize_after=False)
     # Column 'a' should be all zeros except first NaN
     assert np.isnan(result["a"].iloc[0])
-    assert (result["a"].iloc[1:] == pytest.approx(0.0)).all()
+    assert (result["a"].iloc[1:].abs() < 1e-10).all()
 
 
 def test_pipeline_get_series_list_non_empty(tmp_path):
