@@ -1,0 +1,60 @@
+model:
+  n_factors: 4
+  n_regimes: 4
+  regime_labels:
+    - expansion
+    - slowdown
+    - recession
+    - recovery
+  factor_names:
+    - real_activity
+    - labor_market
+    - inflation
+    - financial_conditions
+  em_max_iter: 200
+  em_tol: 1.0e-6
+  kalman:
+    initial_state_mean: 0.0
+    initial_state_cov: 1.0
+
+allocation:
+  regime_conditional_weights:
+    expansion:
+      equities: 0.60
+      bonds: 0.20
+      commodities: 0.15
+      cash: 0.05
+    slowdown:
+      equities: 0.40
+      bonds: 0.40
+      commodities: 0.10
+      cash: 0.10
+    recession:
+      equities: 0.20
+      bonds: 0.50
+      commodities: 0.05
+      cash: 0.25
+    recovery:
+      equities: 0.55
+      bonds: 0.25
+      commodities: 0.15
+      cash: 0.05
+
+data:
+  fred_api_base_url: "https://api.stlouisfed.org/fred"
+  cache_dir: "data/cache"
+  database_path: "data/nowcaster.duckdb"
+  start_date: "1980-01-01"
+  vintage_dir: "data/vintages"
+
+agent:
+  llm_model: "gpt-4o-mini"
+  temperature: 0.3
+  max_tokens: 1500
+  system_prompt_path: "config/prompts/macro_analyst_system.txt"
+
+dashboard:
+  title: "Macro Regime Nowcaster"
+  refresh_interval: 3600
+  chart_theme: "plotly_dark"
+  recession_shading: true

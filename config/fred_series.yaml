@@ -1,0 +1,353 @@
+# FRED Series Catalog
+# Fields: code, name, frequency, category, transform, publication_lag_days
+series:
+
+  # Labor Market
+  - code: PAYEMS
+    name: Total Nonfarm Payrolls
+    frequency: monthly
+    category: labor_market
+    transform: diff
+    publication_lag_days: 35
+
+  - code: ICSA
+    name: Initial Claims for Unemployment Insurance
+    frequency: weekly
+    category: labor_market
+    transform: log_diff
+    publication_lag_days: 5
+
+  - code: CCSA
+    name: Continued Claims for Unemployment Insurance
+    frequency: weekly
+    category: labor_market
+    transform: log_diff
+    publication_lag_days: 12
+
+  - code: UNRATE
+    name: Civilian Unemployment Rate
+    frequency: monthly
+    category: labor_market
+    transform: diff
+    publication_lag_days: 35
+
+  - code: JTSJOL
+    name: Job Openings Total Nonfarm
+    frequency: monthly
+    category: labor_market
+    transform: log_diff
+    publication_lag_days: 40
+
+  - code: CES0500000003
+    name: Average Hourly Earnings of All Employees
+    frequency: monthly
+    category: labor_market
+    transform: log_diff
+    publication_lag_days: 35
+
+  - code: AWHMAN
+    name: Average Weekly Hours of Production and Nonsupervisory Employees Manufacturing
+    frequency: monthly
+    category: labor_market
+    transform: diff
+    publication_lag_days: 35
+
+  - code: CIVPART
+    name: Labor Force Participation Rate
+    frequency: monthly
+    category: labor_market
+    transform: diff
+    publication_lag_days: 35
+
+  - code: U6RATE
+    name: Total Unemployed Plus Marginally Attached Plus Part Time for Economic Reasons
+    frequency: monthly
+    category: labor_market
+    transform: diff
+    publication_lag_days: 35
+
+  # Production & Activity
+  - code: INDPRO
+    name: Industrial Production Index
+    frequency: monthly
+    category: production_activity
+    transform: log_diff
+    publication_lag_days: 17
+
+  - code: TCU
+    name: Capacity Utilization Total Industry
+    frequency: monthly
+    category: production_activity
+    transform: diff
+    publication_lag_days: 17
+
+  - code: CFNAI
+    name: Chicago Fed National Activity Index
+    frequency: monthly
+    category: production_activity
+    transform: none
+    publication_lag_days: 24
+
+  - code: W875RX1
+    name: Real Personal Income Excluding Current Transfer Receipts
+    frequency: monthly
+    category: production_activity
+    transform: log_diff
+    publication_lag_days: 30
+
+  - code: RSXFS
+    name: Advance Retail Sales Excluding Food Services
+    frequency: monthly
+    category: production_activity
+    transform: log_diff
+    publication_lag_days: 15
+
+  - code: CMRMTSPL
+    name: Real Manufacturing and Trade Industries Sales
+    frequency: monthly
+    category: production_activity
+    transform: log_diff
+    publication_lag_days: 45
+
+  - code: IPMAN
+    name: Industrial Production Manufacturing
+    frequency: monthly
+    category: production_activity
+    transform: log_diff
+    publication_lag_days: 17
+
+  - code: IPMANSICS
+    name: Industrial Production SIC Manufacturing
+    frequency: monthly
+    category: production_activity
+    transform: log_diff
+    publication_lag_days: 17
+
+  # Financial Conditions
+  - code: T10Y2Y
+    name: 10-Year Treasury Minus 2-Year Treasury
+    frequency: daily
+    category: financial_conditions
+    transform: none
+    publication_lag_days: 1
+
+  - code: T10Y3M
+    name: 10-Year Treasury Minus 3-Month Treasury
+    frequency: daily
+    category: financial_conditions
+    transform: none
+    publication_lag_days: 1
+
+  - code: BAA10Y
+    name: Moody's BAA Corporate Bond Minus 10-Year Treasury
+    frequency: daily
+    category: financial_conditions
+    transform: none
+    publication_lag_days: 1
+
+  - code: AAA10Y
+    name: Moody's AAA Corporate Bond Minus 10-Year Treasury
+    frequency: daily
+    category: financial_conditions
+    transform: none
+    publication_lag_days: 1
+
+  - code: DFF
+    name: Federal Funds Effective Rate
+    frequency: daily
+    category: financial_conditions
+    transform: none
+    publication_lag_days: 1
+
+  - code: DGS2
+    name: 2-Year Treasury Constant Maturity Rate
+    frequency: daily
+    category: financial_conditions
+    transform: diff
+    publication_lag_days: 1
+
+  - code: DGS10
+    name: 10-Year Treasury Constant Maturity Rate
+    frequency: daily
+    category: financial_conditions
+    transform: diff
+    publication_lag_days: 1
+
+  - code: SP500
+    name: S&P 500
+    frequency: daily
+    category: financial_conditions
+    transform: log_diff
+    publication_lag_days: 1
+
+  - code: NFCI
+    name: Chicago Fed National Financial Conditions Index
+    frequency: weekly
+    category: financial_conditions
+    transform: none
+    publication_lag_days: 5
+
+  - code: STLFSI2
+    name: St. Louis Fed Financial Stress Index
+    frequency: weekly
+    category: financial_conditions
+    transform: none
+    publication_lag_days: 5
+
+  - code: TEDRATE
+    name: TED Spread
+    frequency: daily
+    category: financial_conditions
+    transform: none
+    publication_lag_days: 1
+
+  # Consumer & Housing
+  - code: UMCSENT
+    name: University of Michigan Consumer Sentiment
+    frequency: monthly
+    category: consumer_housing
+    transform: diff
+    publication_lag_days: 14
+
+  - code: PERMIT
+    name: New Private Housing Units Authorized by Building Permits
+    frequency: monthly
+    category: consumer_housing
+    transform: log_diff
+    publication_lag_days: 20
+
+  - code: HOUST
+    name: Housing Starts Total New Privately Owned
+    frequency: monthly
+    category: consumer_housing
+    transform: log_diff
+    publication_lag_days: 18
+
+  - code: EXHOSLUSM495S
+    name: Existing Home Sales
+    frequency: monthly
+    category: consumer_housing
+    transform: log_diff
+    publication_lag_days: 25
+
+  - code: HSN1F
+    name: New One Family Houses Sold
+    frequency: monthly
+    category: consumer_housing
+    transform: log_diff
+    publication_lag_days: 28
+
+  # Prices & Inflation
+  - code: CPIAUCSL
+    name: Consumer Price Index for All Urban Consumers All Items
+    frequency: monthly
+    category: prices_inflation
+    transform: log_diff
+    publication_lag_days: 14
+
+  - code: CPILFESL
+    name: Consumer Price Index All Urban Consumers Less Food and Energy
+    frequency: monthly
+    category: prices_inflation
+    transform: log_diff
+    publication_lag_days: 14
+
+  - code: PCEPI
+    name: Personal Consumption Expenditures Chain-type Price Index
+    frequency: monthly
+    category: prices_inflation
+    transform: log_diff
+    publication_lag_days: 30
+
+  - code: PCEPILFE
+    name: PCE Excluding Food and Energy
+    frequency: monthly
+    category: prices_inflation
+    transform: log_diff
+    publication_lag_days: 30
+
+  - code: PPIFIS
+    name: Producer Price Index by Industry Final Demand
+    frequency: monthly
+    category: prices_inflation
+    transform: log_diff
+    publication_lag_days: 14
+
+  - code: T5YIE
+    name: 5-Year Breakeven Inflation Rate
+    frequency: daily
+    category: prices_inflation
+    transform: none
+    publication_lag_days: 1
+
+  - code: T10YIE
+    name: 10-Year Breakeven Inflation Rate
+    frequency: daily
+    category: prices_inflation
+    transform: none
+    publication_lag_days: 1
+
+  - code: DCOILWTICO
+    name: Crude Oil Prices WTI
+    frequency: daily
+    category: prices_inflation
+    transform: log_diff
+    publication_lag_days: 1
+
+  # Money & Credit
+  - code: M2SL
+    name: M2 Money Stock
+    frequency: monthly
+    category: money_credit
+    transform: log_diff
+    publication_lag_days: 14
+
+  - code: TOTBKCR
+    name: Total Bank Credit of All Commercial Banks
+    frequency: weekly
+    category: money_credit
+    transform: log_diff
+    publication_lag_days: 7
+
+  - code: TOTALSL
+    name: Total Consumer Credit Outstanding
+    frequency: monthly
+    category: money_credit
+    transform: log_diff
+    publication_lag_days: 35
+
+  - code: BUSLOANS
+    name: Commercial and Industrial Loans All Commercial Banks
+    frequency: weekly
+    category: money_credit
+    transform: log_diff
+    publication_lag_days: 7
+
+  - code: CONSUMER
+    name: Total Consumer Credit Outstanding (alternative)
+    frequency: monthly
+    category: money_credit
+    transform: log_diff
+    publication_lag_days: 35
+
+  # GDP
+  - code: GDPC1
+    name: Real Gross Domestic Product
+    frequency: quarterly
+    category: gdp
+    transform: log_diff
+    publication_lag_days: 28
+
+  - code: GDPDEF
+    name: Gross Domestic Product Implicit Price Deflator
+    frequency: quarterly
+    category: gdp
+    transform: log_diff
+    publication_lag_days: 28
+
+  - code: A261RX1Q020SBEA
+    name: Real Gross Domestic Income
+    frequency: quarterly
+    category: gdp
+    transform: log_diff
+    publication_lag_days: 60
