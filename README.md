@@ -47,7 +47,7 @@
 ### 1. Clone and install
 
 ```bash
-git clone https://github.com/your-org/macro-regime-nowcaster.git
+git clone https://github.com/USERNAME/macro-regime-nowcaster.git
 cd macro-regime-nowcaster
 pip install -e ".[dev]"
 ```
