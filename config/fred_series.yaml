@@ -351,3 +351,30 @@ series:
     category: gdp
     transform: log_diff
     publication_lag_days: 60
+
+# ---------------------------------------------------------------------------
+# Recession-sensitive series
+# ---------------------------------------------------------------------------
+# Subset of series particularly informative for detecting business-cycle
+# turning points.  Used by the probit model and curated regime composite.
+recession_sensitive_series:
+  # Labor market (coincident / lagging)
+  - PAYEMS        # Nonfarm payrolls — core coincident indicator
+  - ICSA          # Initial claims — leading indicator
+  - UNRATE        # Unemployment rate — lagging, high signal-to-noise
+  - AWHMAN        # Avg weekly hours, manufacturing — leading
+  # Production & activity (coincident)
+  - INDPRO        # Industrial production
+  - TCU           # Capacity utilisation
+  - CFNAI         # Chicago Fed National Activity Index — purpose-built
+  - W875RX1       # Real personal income ex-transfers
+  - RSXFS         # Retail sales
+  # Financial conditions (leading)
+  - T10Y2Y        # 10Y−2Y yield spread — best single leading indicator
+  - T10Y3M        # 10Y−3M yield spread — alternative yield curve measure
+  - BAA10Y        # BAA credit spread — widens before recessions
+  - NFCI          # Financial conditions index
+  # Consumer & housing (leading)
+  - UMCSENT       # Consumer sentiment
+  - PERMIT        # Building permits
+  - HOUST         # Housing starts

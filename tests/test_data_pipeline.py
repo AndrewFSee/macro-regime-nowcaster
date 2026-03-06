@@ -72,7 +72,7 @@ def test_apply_all_transforms_handles_nans():
     assert (result["a"].iloc[1:].abs() < 1e-10).all()
 
 
-def test_pipeline_get_series_list_non_empty(tmp_path):
+def test_pipeline_get_series_list_non_empty():
     """DataPipeline loads series from config/fred_series.yaml."""
     # Use the real config file from the project
     pipeline = DataPipeline.__new__(DataPipeline)

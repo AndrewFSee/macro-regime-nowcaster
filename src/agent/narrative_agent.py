@@ -181,13 +181,26 @@ class NarrativeAgent:
 
 
 def _extract_section(text: str, start_marker: str, end_marker: Optional[str]) -> str:
-    """Extract text between two markdown section headers."""
+    """Extract text between two markdown section headers.
+
+    Handles multiple heading formats the LLM may produce:
+      - ``**Summary:**`` (colon inside bold)
+      - ``**Summary**:`` (colon outside bold)
+      - ``## Summary`` (markdown heading)
+    """
     import re
 
-    pattern = (
-        rf"\*\*{re.escape(start_marker)}\*\*[:\s]*(.*?)"
-        + (rf"(?=\*\*{re.escape(end_marker)}\*\*)" if end_marker else r"$")
+    # Build alternatives for the start marker
+    esc = re.escape(start_marker)
+    start_alts = (
+        rf"(?:\*\*{esc}:?\*\*:?|#{{1,3}}\s*{esc}:?)"
     )
+    end_alts = (
+        rf"(?=\*\*{re.escape(end_marker)}:?\*\*|#{{1,3}}\s*{re.escape(end_marker)})"
+        if end_marker
+        else r"$"
+    )
+    pattern = rf"{start_alts}[\s]*(.*?){end_alts}"
     match = re.search(pattern, text, re.DOTALL | re.IGNORECASE)
     return match.group(1).strip() if match else ""
 

@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from src.models.dynamic_factor_model import DynamicFactorModel, _fill_for_pca
+from src.models.dynamic_factor_model import DynamicFactorModel, _fill_for_pca, _varimax
 
 
 # ---------------------------------------------------------------------------
@@ -72,3 +72,45 @@ def test_dfm_with_nan_panel(synthetic_panel_with_nans):
     dfm.fit(synthetic_panel_with_nans)
     assert dfm._is_fitted
     assert dfm.factors_ is not None
+
+
+def test_varimax_produces_orthogonal_rotation():
+    """Varimax rotation matrix should be orthogonal (R'R = I)."""
+    rng = np.random.default_rng(123)
+    loadings = rng.standard_normal((20, 4))
+    _, R = _varimax(loadings)
+    np.testing.assert_allclose(R.T @ R, np.eye(4), atol=1e-10)
+
+
+def test_varimax_single_factor_noop():
+    """With K=1 there's nothing to rotate — should return identity."""
+    loadings = np.array([[1.0], [2.0], [3.0]])
+    rotated, R = _varimax(loadings)
+    np.testing.assert_allclose(R, np.eye(1))
+    np.testing.assert_allclose(rotated, loadings)
+
+
+def test_dfm_rotated_factors_are_distinct(synthetic_panel):
+    """After varimax, factor time-series should be less correlated."""
+    dfm = DynamicFactorModel(n_factors=2, max_iter=20, rotate=True)
+    dfm.fit(synthetic_panel)
+    f = dfm.factors_.values
+    corr = np.abs(np.corrcoef(f.T)[0, 1])
+    # Rotated factors should have low cross-correlation
+    assert corr < 0.5, f"Factors too correlated after varimax: |r| = {corr:.3f}"
+
+
+def test_dfm_rotation_matrix_stored(synthetic_panel):
+    """DFM should store a rotation matrix after fitting with rotate=True."""
+    dfm = DynamicFactorModel(n_factors=2, max_iter=10, rotate=True)
+    dfm.fit(synthetic_panel)
+    assert dfm._rotation_matrix is not None
+    K = 2
+    assert dfm._rotation_matrix.shape == (K, K)
+
+
+def test_dfm_no_rotation_flag(synthetic_panel):
+    """With rotate=False, rotation matrix should be identity."""
+    dfm = DynamicFactorModel(n_factors=2, max_iter=10, rotate=False)
+    dfm.fit(synthetic_panel)
+    np.testing.assert_allclose(dfm._rotation_matrix, np.eye(2))

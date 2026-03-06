@@ -6,6 +6,7 @@ from src.utils.date_utils import (
     align_to_monthly,
     get_publication_date,
     business_days_between,
+    ragged_edge_mask,
 )
 
 __all__ = [
@@ -14,4 +15,5 @@ __all__ = [
     "align_to_monthly",
     "get_publication_date",
     "business_days_between",
+    "ragged_edge_mask",
 ]

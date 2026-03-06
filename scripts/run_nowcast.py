@@ -70,11 +70,16 @@ def main() -> int:
 
     model_cfg = settings.get("model", {})
     n_factors = model_cfg.get("n_factors", 4)
-    n_regimes = model_cfg.get("n_regimes", 4)
+    n_regimes = model_cfg.get("n_regimes", 2)
     regime_labels = model_cfg.get("regime_labels", None)
     factor_names = model_cfg.get("factor_names", None)
     start_date = settings.get("data", {}).get("start_date", "1980-01-01")
     cache_dir = settings.get("data", {}).get("cache_dir", "data/cache")
+
+    # Ensemble settings
+    ensemble_cfg = model_cfg.get("ensemble", {})
+    use_ensemble = ensemble_cfg.get("enabled", True)
+    ensemble_weights = ensemble_cfg.get("weights", None)
 
     from src.data.fred_client import FREDClient
     from src.data.data_pipeline import DataPipeline
@@ -88,6 +93,8 @@ def main() -> int:
         n_regimes=n_regimes,
         regime_labels=regime_labels,
         factor_names=factor_names,
+        use_ensemble=use_ensemble,
+        ensemble_weights=ensemble_weights,
     )
 
     logger.info("Running nowcast…")

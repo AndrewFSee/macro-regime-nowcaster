@@ -1,21 +1,33 @@
 model:
   n_factors: 4
-  n_regimes: 4
+  n_regimes: 2
   regime_labels:
     - expansion
-    - slowdown
     - recession
-    - recovery
   factor_names:
     - real_activity
     - labor_market
     - inflation
-    - financial_conditions
+    - financial_stress
   em_max_iter: 200
   em_tol: 1.0e-6
   kalman:
     initial_state_mean: 0.0
     initial_state_cov: 1.0
+
+  # Ensemble recession detection
+  ensemble:
+    enabled: true
+    weights:
+      rsm: 0.25        # Multivariate Markov-switching model
+      probit: 0.50      # Probit model (supervised, highest weight)
+      cfnai: 0.25       # CFNAI threshold signal
+    probit:
+      add_lags: 1
+      regularization: 0.01
+      extra_features:
+        - CFNAI
+        - T10Y2Y
 
 allocation:
   regime_conditional_weights:
@@ -24,21 +36,11 @@ allocation:
       bonds: 0.20
       commodities: 0.15
       cash: 0.05
-    slowdown:
-      equities: 0.40
-      bonds: 0.40
-      commodities: 0.10
-      cash: 0.10
     recession:
-      equities: 0.20
+      equities: 0.15
       bonds: 0.50
       commodities: 0.05
-      cash: 0.25
-    recovery:
-      equities: 0.55
-      bonds: 0.25
-      commodities: 0.15
-      cash: 0.05
+      cash: 0.30
 
 data:
   fred_api_base_url: "https://api.stlouisfed.org/fred"

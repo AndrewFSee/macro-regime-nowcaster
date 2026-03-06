@@ -9,6 +9,11 @@ import pytest
 from src.allocation.regime_allocator import RegimeAllocator
 from src.allocation.backtester import Backtester, BacktestResult, _max_drawdown, _average_turnover
 
+try:
+    from src.models.nowcaster import NowcastResult
+except ImportError:
+    NowcastResult = None
+
 
 # ---------------------------------------------------------------------------
 # RegimeAllocator tests
@@ -17,7 +22,7 @@ from src.allocation.backtester import Backtester, BacktestResult, _max_drawdown,
 
 def test_allocator_weights_sum_to_one():
     allocator = RegimeAllocator()
-    probs = {"expansion": 0.7, "slowdown": 0.2, "recession": 0.05, "recovery": 0.05}
+    probs = {"expansion": 0.7, "recession": 0.3}
     allocation = allocator.get_allocation(probs)
     total = sum(allocation.values())
     assert abs(total - 1.0) < 1e-10
@@ -26,7 +31,7 @@ def test_allocator_weights_sum_to_one():
 def test_allocator_pure_regime_matches_config():
     allocator = RegimeAllocator()
     # 100% recession → should match recession config exactly
-    probs = {"expansion": 0.0, "slowdown": 0.0, "recession": 1.0, "recovery": 0.0}
+    probs = {"expansion": 0.0, "recession": 1.0}
     allocation = allocator.get_allocation(probs)
     expected = allocator.get_regime_weights("recession")
     for asset in expected:
@@ -105,3 +110,36 @@ def test_backtester_benchmarks(regime_probs_df, asset_returns_df):
     assert "buy_and_hold" in benchmarks
     assert "60_40" in benchmarks
     assert isinstance(benchmarks["buy_and_hold"], BacktestResult)
+
+
+# ---------------------------------------------------------------------------
+# get_allocation_from_nowcast tests
+# ---------------------------------------------------------------------------
+
+
+def test_allocator_from_nowcast_uses_recession_prob(sample_nowcast_result):
+    """get_allocation_from_nowcast should blend based on recession_probability."""
+    allocator = RegimeAllocator()
+    allocation = allocator.get_allocation_from_nowcast(sample_nowcast_result)
+    assert sum(allocation.values()) == pytest.approx(1.0)
+    # With recession_probability > 0, recession allocation should be included
+    assert allocation["bonds"] > 0
+
+
+def test_allocator_from_nowcast_high_recession():
+    """At 100% recession, allocation should match pure recession weights."""
+    if NowcastResult is None:
+        pytest.skip("NowcastResult not available")
+    result = NowcastResult(
+        gdp_nowcast=-1.0,
+        gdp_ci_lower=-3.0,
+        gdp_ci_upper=1.0,
+        regime_probabilities={"expansion": 0.0, "recession": 1.0},
+        current_regime="recession",
+        recession_probability=1.0,
+    )
+    allocator = RegimeAllocator()
+    allocation = allocator.get_allocation_from_nowcast(result)
+    expected = allocator.get_regime_weights("recession")
+    for asset in expected:
+        assert allocation[asset] == pytest.approx(expected[asset])

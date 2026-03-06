@@ -28,12 +28,10 @@ class RegimeAllocator:
             If provided, *settings_path* is ignored.
     """
 
-    # Default allocations used when no config is available
+    # Default allocations used when no config is available (2-regime setup)
     _DEFAULT_WEIGHTS: dict[str, dict[str, float]] = {
         "expansion": {"equities": 0.60, "bonds": 0.20, "commodities": 0.15, "cash": 0.05},
-        "slowdown":  {"equities": 0.40, "bonds": 0.40, "commodities": 0.10, "cash": 0.10},
-        "recession": {"equities": 0.20, "bonds": 0.50, "commodities": 0.05, "cash": 0.25},
-        "recovery":  {"equities": 0.55, "bonds": 0.25, "commodities": 0.15, "cash": 0.05},
+        "recession": {"equities": 0.15, "bonds": 0.50, "commodities": 0.05, "cash": 0.30},
     }
 
     def __init__(
@@ -112,6 +110,30 @@ class RegimeAllocator:
         for _, row in regime_probs_df.iterrows():
             rows.append(self.get_allocation(row.to_dict()))
         return pd.DataFrame(rows, index=regime_probs_df.index)
+
+    def get_allocation_from_nowcast(self, nowcast_result) -> dict[str, float]:
+        """Compute allocation directly from a NowcastResult.
+
+        Uses the ensemble recession probability to derive a two-regime
+        probability split (expansion = 1 − P(recession), recession = P(recession)).
+
+        Args:
+            nowcast_result: Object with ``recession_probability`` and
+                ``regime_probabilities`` attributes.
+
+        Returns:
+            Mapping ``asset_class → weight`` that sums to 1.0.
+        """
+        # Prefer ensemble recession probability when available
+        p_recession = getattr(nowcast_result, "recession_probability", None)
+        if p_recession is not None and p_recession > 0:
+            regime_probs = {
+                "expansion": 1.0 - p_recession,
+                "recession": p_recession,
+            }
+        else:
+            regime_probs = getattr(nowcast_result, "regime_probabilities", {})
+        return self.get_allocation(regime_probs)
 
     # ------------------------------------------------------------------
     # Private helpers
